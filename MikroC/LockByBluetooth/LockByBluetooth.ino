@@ -16,6 +16,7 @@ int close = 10;
 unsigned int servo = 3;
 char junk;
 String inputString="";
+String futureTimeMinute="";
 
 void setup() {
   Wire.begin();
@@ -32,21 +33,31 @@ void loop()
 {
   DateTime now = RTC.now();
   Serial.print(now.minute());
-  Serial.println(now.second());
+  //Serial.println(now.second());
+  String nowMinuteString = String(now.minute());
+
   if(Serial.available()){
   while(Serial.available())
     {
-      uint8_t inputString = (uint8_t)Serial.readString(); //read the input
+      inputString = Serial.readString(); //read the input
       //char inChar = (char)Serial.read(); //read the input
       //inputString += inChar;        //make a string of the characters coming on serial
     }
-    Serial.println(inputString);
     while (Serial.available() > 0)  
     { junk = Serial.read() ; }      // clear the serial buffer
-    if(now.minute() == inputString){         //in case of 'a' turn the LED on
+
+   //if input string is not empty or is not "open or close" then it must be full of something, like the numbers we need
+    if(inputString != "close"){
+     //get value of input string and put it in futureTimeMinute to be used later
+      String futureTimeMinute = inputString;
+    }
+    //debug
+      Serial.println(futureTimeMinute);
+    if(futureTimeMinute == nowMinuteString){         //in case of 'a' turn the LED on
       digitalWrite(13, HIGH);  
       myServo.write(open);
-    }else if(inputString == "close"){   //incase of 'b' turn the LED off
+    }
+    else if(inputString == "close"){   //incase of 'b' turn the LED off
       digitalWrite(13, LOW);
        myServo.write(close);
     }
