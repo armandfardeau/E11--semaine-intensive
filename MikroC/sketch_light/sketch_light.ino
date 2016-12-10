@@ -1,6 +1,6 @@
 #include <Adafruit_NeoPixel.h>
 
-#define PIN 1
+#define PIN 10
 #define STRIPSIZE 16
 
 // Parameter 1 = number of pixels in strip
