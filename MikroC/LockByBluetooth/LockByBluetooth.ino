@@ -4,29 +4,57 @@
 #include <Wire.h>
 #include <RTClib.h>
 
+//include la librairie du neopixel
+#include <Adafruit_NeoPixel.h>
+#define PIN 10
+#define STRIPSIZE 16
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(STRIPSIZE, PIN, NEO_GRB + NEO_KHZ800);
+
 //rename des modules
 RTC_DS1307 RTC;
 Servo myServo;
 
-//Position ouverte = 90 degré
-int open = 90;
-//Position fermé = 10 degré
-int close = 10;
+// servo var part
+  unsigned int servo = 3;
+  //Position ouverte = 90 degré
+  int open = 90;
+  //Position fermé = 10 degré
+  int close = 10;
 
-unsigned int servo = 3;
-char junk;
-String inputString="";
-String futureTimeMinute="";
+//var used in serial communication part
+  char junk;
+  String inputString="";
+  String futureTimeMinute="";
 
 void setup() {
+//RTC module begin
   Wire.begin();
   RTC.begin();
   // regler la date et l'heure à la compilation, décommenter pour ajuster l'heure, commenter une fois reglé
   //RTC.adjust(DateTime(__DATE__, __TIME__));
+//RTC module end
 
+
+// strip module begin
+  strip.begin();
+  strip.setBrightness(25);  // Lower brightness and save eyeballs!
+  strip.show(); // Initialize all pixels to 'off'
+// strip module end  
+
+// servo module begin  
   myServo.attach(servo);
+//servo module end
+
+//bluetooth module begin
+  //BT is connected to TX and RX, it use Serial communication. Baud rate muste be send to 115200
   Serial.begin(115200);            // set the baud rate to 9600, same should be of your Serial Monitor
- pinMode(13, OUTPUT);
+//Bluetooth module end 
+
+//led13 begin
+  //used for debug
+pinMode(13, OUTPUT);
+// led13 module end
+ 
 }
 
 void loop()
@@ -60,6 +88,14 @@ void loop()
     else if(inputString == "close"){   //incase of 'b' turn the LED off
       digitalWrite(13, LOW);
        myServo.write(close);
+    }
+    else if(inputString == "open"){   //incase of 'b' turn the LED off
+      digitalWrite(13, LOW);
+       myServo.write(open);
+    }
+    else if(inputString == "panic"){   //incase of 'b' turn the LED off
+      digitalWrite(13, LOW);
+       myServo.write(open);
     }
     inputString = "";
   }
