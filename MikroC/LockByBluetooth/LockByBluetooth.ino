@@ -24,7 +24,8 @@ Servo myServo;
 //var used in serial communication part
   char junk;
   String inputString="";
-  String futureTimeMinute="";
+  String dateUser="";
+  String boxTime = 0;
 
 void setup() {
 //RTC module begin
@@ -62,7 +63,7 @@ void loop()
   DateTime now = RTC.now();
   Serial.print(now.minute());
   //Serial.println(now.second());
-  String nowMinuteString = String(now.minute());
+  boxTime = String(now.minute());
 
   if(Serial.available()){
   while(Serial.available())
@@ -77,11 +78,11 @@ void loop()
    //if input string is not empty or is not "open or close" then it must be full of something, like the numbers we need
     if(inputString != "close"){
      //get value of input string and put it in futureTimeMinute to be used later
-      String futureTimeMinute = inputString;
+      String dateUser = inputString;
     }
     //debug
       Serial.println(futureTimeMinute);
-    if(futureTimeMinute == nowMinuteString){         //in case of 'a' turn the LED on
+    if(dateUser == nowMinuteString){         //in case of 'a' turn the LED on
       digitalWrite(13, HIGH);  
       myServo.write(open);
     }
