@@ -36,6 +36,9 @@ int yearUser;
 int hourUser;
 int minuteUser;  
 
+//var used to know how much time is left
+
+
 
 //function declaration
 void FunctionStringToInt(String _string){
@@ -115,7 +118,18 @@ int FunctionCompare(char _char){
     }
 }
 
-unsigned long FunctionTimeLeft(actualDay,actualMonth,actualYear,actualHour,actualMinute,futureDay,futureMonth,futureYear,futureHour,futureMinute){}
+/*
+ unsigned long FunctionTimeLeft(actualDay,actualMonth,actualYear,actualHour,actualMinute,futureDay,futureMonth,futureYear,futureHour,futureMinute){
+  //calculate value in seconds
+  int dayLeft = (futureDay - actualDay)*24*3600;
+  int monthLeft = actualMonth - futureMonth;
+  int yearLeft = actualMonth - futureMonth;
+  int hourLeft = actualMonth - futureMonth;
+  int minuteLeft = actualMonth - futureMonth;
+  
+  return timeLeft;
+  }
+  */
 void setup() {
 //RTC module begin
   Wire.begin();
