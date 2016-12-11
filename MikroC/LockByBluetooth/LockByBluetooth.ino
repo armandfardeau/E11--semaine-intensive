@@ -24,8 +24,8 @@ Servo myServo;
 //var used in serial communication part
   char junk;
   String inputString="";
-  String dateUser="";
-  String boxTime = 0;
+  String dateUser;
+  String boxTime = "";
 
 void setup() {
 //RTC module begin
@@ -61,43 +61,37 @@ pinMode(13, OUTPUT);
 void loop()
 {
   DateTime now = RTC.now();
-  Serial.print(now.minute());
+  //Serial.print(now.minute());
   //Serial.println(now.second());
-  boxTime = String(now.minute());
+  //boxTime = String(now.minute());
+
 
   if(Serial.available()){
-  while(Serial.available())
-    {
-      inputString = Serial.readString(); //read the input
-      //char inChar = (char)Serial.read(); //read the input
-      //inputString += inChar;        //make a string of the characters coming on serial
+    while(Serial.available())
+      {
+        inputString = Serial.readString(); //read the input
+        //char inChar = (char)Serial.read(); //read the input
+        //inputString += inChar;        //make a string of the characters coming on serial
+      }
+    
+      
+      if(inputString == "close"){   //incase of 'close' close the box
+        digitalWrite(13, HIGH);
+         myServo.write(close);
+      }
+      else if(inputString == "open"){   //incase of 'open' open the box
+        digitalWrite(13, HIGH);
+         myServo.write(open);
+      }
+      //if input is not empty then it must be full of something, like the numbers we need
+      else{
+        dateUser = inputString;
+        Serial.println(dateUser);
+      }
+      while (Serial.available() > 0)  
+      { junk = Serial.read() ; }      // clear the serial buffer
+      inputString = "";
     }
-    while (Serial.available() > 0)  
-    { junk = Serial.read() ; }      // clear the serial buffer
-
-   //if input string is not empty or is not "open or close" then it must be full of something, like the numbers we need
-    if(inputString != "close"){
-     //get value of input string and put it in futureTimeMinute to be used later
-      String dateUser = inputString;
+  else{
     }
-    //debug
-      Serial.println(futureTimeMinute);
-    if(dateUser == nowMinuteString){         //in case of 'a' turn the LED on
-      digitalWrite(13, HIGH);  
-      myServo.write(open);
-    }
-    else if(inputString == "close"){   //incase of 'b' turn the LED off
-      digitalWrite(13, LOW);
-       myServo.write(close);
-    }
-    else if(inputString == "open"){   //incase of 'b' turn the LED off
-      digitalWrite(13, LOW);
-       myServo.write(open);
-    }
-    else if(inputString == "panic"){   //incase of 'b' turn the LED off
-      digitalWrite(13, LOW);
-       myServo.write(open);
-    }
-    inputString = "";
-  }
 }
