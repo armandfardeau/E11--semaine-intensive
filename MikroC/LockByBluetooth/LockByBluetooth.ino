@@ -195,7 +195,7 @@ void loop()
   boxTime += String(now.year());
   boxTime += String(now.hour());
   boxTime += String(now.minute());
-
+  //Serial.println(boxTime);
 
   if (Serial.available()) {
     while (Serial.available())
