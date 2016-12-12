@@ -13,16 +13,16 @@
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIN);
 const uint32_t colorMap[COLOR_COUNT] = {
   strip.Color(106, 162, 203),
-  strip.Color(94, 11, 212),
+  strip.Color(94, 175, 211),
   strip.Color(89, 178, 213),
-  strip.Color(98, 170, 208),
-  strip.Color(111, 153, 198),
-  strip.Color(123, 8, 183),
+  strip.Color(100, 170, 208),
+  strip.Color(112, 153, 198),
+  strip.Color(123, 130, 183),
   strip.Color(131, 111, 171),
   strip.Color(135, 100, 164),
   strip.Color(135, 97, 162),
   strip.Color(133, 103, 166),
-  strip.Color(128, 120, 177),
+  strip.Color(129, 119, 176),
   strip.Color(119, 141, 191),
 };
 
