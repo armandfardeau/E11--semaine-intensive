@@ -8,7 +8,7 @@
 #include <Adafruit_NeoPixel.h>
 #define PIXEL_COUNT 12
 #define COLOR_COUNT 12
-#define PIN 10
+#define PIN 6
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(PIXEL_COUNT, PIN);
 const uint32_t colorMap[COLOR_COUNT] = {
@@ -171,6 +171,9 @@ void setup() {
 
   // servo module begin
   myServo.attach(servo);
+  myServo.write(open);
+  delay(1000);
+  myServo.detach();
   //servo module end
 
   //bluetooth module begin
@@ -195,7 +198,7 @@ void loop()
   boxTime += String(now.year());
   boxTime += String(now.hour());
   boxTime += String(now.minute());
-  //Serial.println(boxTime);
+
 
   if (Serial.available()) {
     while (Serial.available())
@@ -207,14 +210,24 @@ void loop()
 
 
     if (inputString == "close") { //incase of 'close' close the box
-      digitalWrite(13, HIGH);
       boxClosed = true;
+      myServo.attach(servo);
       myServo.write(close);
+      delay(1000);
+      myServo.detach();
     }
     else if (inputString == "open") { //incase of 'open' open the box
-      digitalWrite(13, HIGH);
       boxClosed = false;
+      myServo.attach(servo);
       myServo.write(open);
+      delay(1000);
+      myServo.detach();
+    }
+    else if (inputString == "time") {
+      Serial.print("BoxTime: ");
+      Serial.println(boxTime);
+      Serial.print("DateUser: ");
+      Serial.println(dateUser);
     }
     //if input is not empty then it must be full of something, like the numbers we need
     else {
@@ -257,7 +270,10 @@ void loop()
       strip.setBrightness(0);
       strip.show();
       boxClosed = false;
+      myServo.attach(servo);
       myServo.write(open);
+      delay(1000);
+      myServo.detach();
     }
   }
   else {}
