@@ -58,7 +58,8 @@ int pixelNbr = 0;
 float pixelNbrInUse = 0;
 float activeTime;
 
-
+bool timeSet = false;
+bool T_timeLeftIsDefined = false;
 void setup() {
   // put your setup code here, to run once:
   // strip module begin
@@ -111,6 +112,7 @@ void loop() {
     //if input is not empty then it must be full of something, like the numbers we need
     else {
       timeLeft = inputString.toFloat();
+      timeSet = true;
 
     }
     while (Serial.available() > 0)
@@ -159,24 +161,31 @@ void loop() {
   }
   else {
     unsigned long currentMillis = millis();
-    if (pixelNbr <= 12 && timeLeft >= 0 ) {
-      if (currentMillis - previousMillis >= interval) {
-        // save the last time you blinked the LED
-        previousMillis = currentMillis;
-        Serial.println("boucle millis");
-        if (T_timeLeft - timeLeft >= activeTime) {
-          Serial.println("boucle strip");
-          strip.setPixelColor(pixelNbr, colorMap[pixelNbr]);
-          strip.show();
-          pixelNbr += 1;
-          pixelNbrInUse += 1.0;
+    if (timeSet) {
+      if (T_timeLeftIsDefined == false) {
+        T_timeLeft = timeLeft;
+        T_timeLeftIsDefined = true;
+      }
+      if (pixelNbr <= 12 && timeLeft >= 0 ) {
+        if (currentMillis - previousMillis >= interval) {
+          // save the last time you blinked the LED
+          previousMillis = currentMillis;
+
+          if (T_timeLeft - timeLeft >= activeTime) {
+            Serial.println(T_timeLeft);
+            Serial.println(timeLeft);
+            Serial.println(activeTime);
+            strip.setPixelColor(pixelNbr, colorMap[pixelNbr]);
+            strip.show();
+            pixelNbr += 1;
+            pixelNbrInUse += 1.0;
+          }
+          // Some example procedures showing how to display to the pixels:
+          timeLeft--;
+          activeTime = (pixelNbrInUse / 12) * T_timeLeft;
+
         }
-        // Some example procedures showing how to display to the pixels:
-        timeLeft--;
-        activeTime = (pixelNbrInUse / 12) * T_timeLeft;
-        Serial.println(timeLeft);
       }
     }
   }
-
 }
