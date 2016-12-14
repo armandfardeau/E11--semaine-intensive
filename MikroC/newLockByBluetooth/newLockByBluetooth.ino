@@ -46,7 +46,6 @@ bool boxClosed;
 //var used in serial communication part
 char junk;
 String inputString = "";
-unsigned float timeLeft;
 
 unsigned long previousMillis = 0;        // will store last time LED was updated
 
@@ -107,21 +106,23 @@ void loop() {
       myServo.detach();
     }
     else if (inputString == "panic") {
- //fonction panic
+      //fonction panic
     }
     //if input is not empty then it must be full of something, like the numbers we need
     else {
       timeLeft = inputString.toFloat();
-      
+
     }
     while (Serial.available() > 0)
     {
       junk = Serial.read() ;  // clear the serial buffer
     }
+    Serial.println(inputString);
     inputString = "";
+    Serial.println(inputString);
   }
-  else if (boxClosed == true) {
-    if (timeLeft <= 0) {
+  else if (timeLeft <= 0) {
+    if (boxClosed == true) {
       while (i < pulse) {
         for (float fadeValue = fadeMin ; fadeValue <= fadeMax; fadeValue += fadeInValue) {
           // sets the value (range from 0 to 75):
@@ -162,30 +163,20 @@ void loop() {
       if (currentMillis - previousMillis >= interval) {
         // save the last time you blinked the LED
         previousMillis = currentMillis;
-        if (pixelNbr == 12) {
-          strip.setBrightness(0);
-          strip.show();
-        }
-        else if (T_timeLeft - timeLeft >= activeTime) {
+        Serial.println("boucle millis");
+        if (T_timeLeft - timeLeft >= activeTime) {
           Serial.println("boucle strip");
           strip.setPixelColor(pixelNbr, colorMap[pixelNbr]);
           strip.show();
-
           pixelNbr += 1;
-
           pixelNbrInUse += 1.0;
-
-
-
-
         }
         // Some example procedures showing how to display to the pixels:
         timeLeft--;
         activeTime = (pixelNbrInUse / 12) * T_timeLeft;
-        Serial.println(T_timeLeft - timeLeft);
-        Serial.println(activeTime);
+        Serial.println(timeLeft);
       }
     }
   }
 
-
+}
