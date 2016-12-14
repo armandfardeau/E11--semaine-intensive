@@ -152,9 +152,7 @@ void loop() {
     {
       junk = Serial.read() ;  // clear the serial buffer
     }
-    Serial.println(inputString);
     inputString = "";
-    Serial.println(inputString);
   }
   else if (timeLeft <= 0) {
     if (boxClosed == true) {
@@ -205,9 +203,6 @@ void loop() {
           previousMillis = currentMillis;
 
           if (T_timeLeft - timeLeft >= activeTime) {
-            Serial.println(T_timeLeft);
-            Serial.println(timeLeft);
-            Serial.println(activeTime);
             strip.setPixelColor(pixelNbr, colorMap[pixelNbr]);
             strip.show();
             pixelNbr += 1;
