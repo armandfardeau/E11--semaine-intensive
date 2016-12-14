@@ -107,7 +107,40 @@ void loop() {
       myServo.detach();
     }
     else if (inputString == "panic") {
-      //fonction panic
+      if (boxClosed == true) {
+        while (i < pulse) {
+          for (float fadeValue = fadeMin ; fadeValue <= fadeMax; fadeValue += fadeInValue) {
+            // sets the value (range from 0 to 75):
+            for (int i = 0; i < strip.numPixels(); i++) {
+              strip.setPixelColor(i, colorMap[i]);
+
+            }
+            strip.setBrightness(fadeValue);
+            strip.show(); // Initialize all pixels to 'off'
+            // wait for 30 milliseconds to see the dimming effect
+            delay(dimming);
+          }
+          // fade out from max to min in increments of 5 points:
+          for (float fadeValue = fadeMax ; fadeValue >= fadeMin; fadeValue -= fadeOutValue) {
+            for (int i = 0; i < strip.numPixels(); i++) {
+              strip.setPixelColor(i, colorMap[i]);
+            }
+            // sets the value (range from 0 to 255):
+            strip.setBrightness(fadeValue);
+            strip.show(); // Initialize all pixels to 'off'
+            // wait for 30 milliseconds to see the dimming effect
+            delay(dimming);
+          }
+          i++;
+        }
+        strip.setBrightness(0);
+        strip.show();
+        boxClosed = false;
+        myServo.attach(servo);
+        myServo.write(open);
+        delay(1000);
+        myServo.detach();
+      }
     }
     //if input is not empty then it must be full of something, like the numbers we need
     else {
