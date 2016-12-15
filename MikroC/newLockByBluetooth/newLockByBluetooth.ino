@@ -28,7 +28,7 @@ float fadeOutValue = 0.5;
 int fadeMax = 75;
 int fadeMin = 10;
 int dimming = 15;
-int pulse = 6;
+int pulse = 4;
 int i;
 
 //rename des modules
@@ -37,7 +37,7 @@ Servo myServo;
 // servo var part
 unsigned int servo = 3;
 //Position ouverte = 90 degré
-int open = 90;
+int open = 100;
 //Position fermé = 10 degré
 int close = 10;
 //boolean boxclosed
@@ -62,20 +62,20 @@ bool timeSet = false;
 bool T_timeLeftIsDefined = false;
 
 void animationFinale() {
-  strip.show();
-  for (uint16_t i = 0; i < 5; i++) {
-    for (uint16_t i = 0; i < strip.numPixels(); i++) {
-      strip.setPixelColor(i, 0);
-      strip.show();
-      delay(100);
-    }
-    for (uint16_t i = 0; i < strip.numPixels(); i++) {
-      strip.setPixelColor(i, colorMap[i]);
-      strip.show();
-      delay(100);
-    }
-  }
-
+  /*  strip.show();
+      for (uint16_t i = 0; i < 5; i++) {
+      for (uint16_t i = 0; i < strip.numPixels(); i++) {
+        strip.setPixelColor(i, 0);
+        strip.show();
+        delay(100);
+      }
+      for (uint16_t i = 0; i < strip.numPixels(); i++) {
+        strip.setPixelColor(i, colorMap[i]);
+        strip.show();
+        delay(100);
+      }
+      }
+  */
   while (i < pulse) {
     for (float fadeValue = fadeMin ; fadeValue <= fadeMax; fadeValue += fadeInValue) {
       // sets the value (range from 0 to 75):
@@ -157,10 +157,8 @@ void loop() {
       delay(1000);
       myServo.detach();
     }
-    else if (inputString == "panic") {
-      if (boxClosed == true) {
-        animationFinale();
-      }
+    else if (inputString == "reset") {
+      asm volatile ("  jmp 0");
     }
     //if input is not empty then it must be full of something, like the numbers we need
     else {
